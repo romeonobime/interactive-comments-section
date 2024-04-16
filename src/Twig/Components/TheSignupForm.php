@@ -48,6 +48,6 @@ class TheSignupForm extends AbstractController
 
         $security->login($user);
 
-        return $this->redirectToRoute('app_browsing_comment');
+        return $this->redirectToRoute('app_comment');
     }
 }
