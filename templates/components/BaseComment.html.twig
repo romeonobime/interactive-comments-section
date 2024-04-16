@@ -1,0 +1,51 @@
+{% props
+	username = "",
+    content = "",
+	score = 0,
+    replies = []
+%}
+
+<article>
+	<header>
+		<h1>{{ username }}</h1>
+		<span>you</span>
+		<span>1 month ago</span>
+	</header>
+	<p>{{ content }}</p>
+	<div>
+		<div>
+			<button>+</button>
+			<span>{{ score }}</span>
+			<button>-</button>
+		</div>
+		<div>
+			<button>Delete</button>
+			<button>Edit</button>
+			<button>Reply</button>
+		</div>
+	</div>
+	<ul>
+		{% for reply in replies %}
+			<li>
+				<header>
+					<h1>{{ reply.user.username }}</h1>
+					<span>you</span>
+					<span>1 month ago</span>
+				</header>
+				<p>@{{ reply.replyingTo }} {{ reply.content }}</p>
+				<div>
+					<div>
+						<button>+</button>
+						<span>{{ reply.score }}</span>
+						<button>-</button>
+					</div>
+					<div>
+						<button>Delete</button>
+						<button>Edit</button>
+						<button>Reply</button>
+					</div>
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+</article>

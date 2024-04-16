@@ -1,0 +1,12 @@
+<ul class="flex flex-wrap gap-10 sm:grid sm:grid-cols-2 sm:gap-0 sm:gap-y-[60px] sm:gap-x-[16px] sm:justify-items-center">
+    {% for comment in this.comments %}
+	    <li>
+		    <twig:BaseComment
+                username="{{ comment.user.username }}"
+                content="{{ comment.content }}"
+                score="{{ comment.score }}"
+                replies="{{ comment.replies }}"
+            />
+	    </li>
+    {% endfor %}
+</ul>
