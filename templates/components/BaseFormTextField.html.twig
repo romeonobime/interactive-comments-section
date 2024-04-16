@@ -1,0 +1,19 @@
+{% props placeholder = "", name = "", value = "", type = "", errors = [], isValid = false %}
+
+<div class="relative">
+	<input
+		class="
+			w-full
+			{{ isValid == false ? "error-field" : "text-field" }}
+		"
+		value="{{ value }}"
+		type="{{ type }}"
+		name="{{ name }}"
+		placeholder="{{ placeholder }}"
+	/>
+	{% if isValid == false %}
+		{% for error in errors %}
+			<span class="absolute right-4 text-red body-small">{{ error }}</span>
+		{% endfor %}
+	{% endif %}
+</div>

@@ -1,0 +1,34 @@
+<div {{ attributes }}>
+	{{ form_start(form, { attr: {
+        'data-action': 'live#action:prevent',
+        'data-live-action-param': 'signup',
+        'class': 'flex flex-col gap-10',
+    }}) }}
+		<twig:BaseFormGroup>
+			<twig:BaseFormTextField
+				name="{{ field_name(form.username) }}"
+				type="text" value="{{ field_value(form.username) }}"
+				placeholder="{{ field_label(form.username) }}"
+				errors="{{ field_errors(form.username) }}"
+				isValid="{{form.username.vars.valid}}"
+			/>
+			<twig:BaseFormTextField
+				name="{{ field_name(form.password.first) }}"
+				type="password"
+				value="{{ field_value(form.password.first) }}"
+				placeholder="{{ field_label(form.password.first) }}"
+				errors="{{ field_errors(form.password.first) }}"
+				isValid="{{form.password.first.vars.valid}}"
+			/>
+			<twig:BaseFormTextField
+				name="{{ field_name(form.password.second) }}"
+				type="password"
+				value="{{ field_value(form.password.second) }}"
+				placeholder="{{ field_label(form.password.second) }}"
+				errors="{{ field_errors(form.password.second) }}"
+				isValid="{{form.password.second.vars.valid}}"
+			/>
+		</twig:BaseFormGroup>
+		<button type="submit" class="button-primary w-full">Create an account</button>
+	{{ form_end(form) }}
+</div>
