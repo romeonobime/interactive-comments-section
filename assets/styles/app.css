@@ -2,6 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-color: skyblue;
+@layer base {
+    @font-face {
+        font-family: "Rubik";
+        src: url("./../fonts/Rubik/Rubik-VariableFont_wght.ttf");
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Rubik", sans-serif;
+    }
+
+    input:focus {
+        outline: none;
+    }
+}
+
+@layer components {
+    .heading-large {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .heading-medium {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .body-medium-bold {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .body-medium {
+        font-size: 16px;
+        font-weight: bold;
+        font-weight: 400;
+    }
+
+    .button {
+        @apply text-white rounded-lg p-3 w-full;
+    }
+
+    .button-primary {
+        @apply bg-primary hover:bg-primary-light;
+    }
+}
+
+@layer utilities {
+    .wrapper {
+        padding-left: max(calc(50% - var(--container) / 2), 1rem);
+        padding-right: max(calc(50% - var(--container) / 2), 1rem);
+    }
 }
