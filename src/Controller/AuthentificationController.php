@@ -13,4 +13,10 @@ class AuthentificationController extends AbstractController
     {
         return $this->render('pages/authentification/signup.html.twig');
     }
+
+    #[Route('/authentification/login', name: 'app_authentification_login')]
+    public function login(): Response
+    {
+        return $this->render('pages/authentification/login.html.twig');
+    }
 }
