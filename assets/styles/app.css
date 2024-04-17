@@ -23,8 +23,13 @@
         font-style: normal;
     }
 
-    input:focus {
+    input:focus,
+    textarea:focus {
         outline: none;
+    }
+
+    textarea {
+        resize: none;
     }
 }
 
@@ -51,11 +56,15 @@
     }
 
     .button {
-        @apply text-white rounded-lg p-3 w-full;
+        @apply text-white rounded-lg p-3;
     }
 
     .button-primary {
         @apply bg-primary hover:bg-primary-light;
+    }
+
+    .input-field {
+        @apply w-full rounded-lg border py-3 px-6 text-neutral-2-dark caret-primary placeholder:text-neutral-2;
     }
 }
 
