@@ -1,6 +1,8 @@
 {% props
 	id = 0,
 	username = "",
+	png = "",
+	webp = "",
     content = "",
 	score = 0,
     replies = []
@@ -10,7 +12,10 @@
 	<article class="flex flex-col gap-4 rounded-lg bg-white p-4">
 		<header class="flex gap-4 items-center">
 			<figure class="h-8 w-8">
-				<twig:BasePicture large="images/avatars/image-amyrobson.png"/>
+				<twig:BaseAvatar
+					png="{{ png }}"
+					webp="{{ webp }}"
+				/>
 			</figure>
 			<div class="flex gap-[7px] items-center">
 				<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
@@ -40,6 +45,8 @@
 					<twig:BaseReply
 						id="{{ reply.user.id }}"
 						username="{{ reply.user.username }}"
+						png="{{ reply.user.image.png }}"
+						webp="{{ reply.user.image.webp }}"
 						replyingTo="{{ reply.replyingTo }}"
 						content="{{ reply.content }}"
 						score="{{ reply.score }}"

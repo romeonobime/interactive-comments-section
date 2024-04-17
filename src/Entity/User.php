@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
     private Collection $comments;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Images $image = null;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
@@ -182,6 +185,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?Images
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Images $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

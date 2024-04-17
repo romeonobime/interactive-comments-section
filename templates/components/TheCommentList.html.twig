@@ -4,6 +4,8 @@
 		    <twig:BaseComment
                 id="{{ comment.user.id }}"
                 username="{{ comment.user.username }}"
+                png="{{ comment.user.image.png }}"
+                webp="{{ comment.user.image.webp }}"
                 content="{{ comment.content }}"
                 score="{{ comment.score }}"
                 replies="{{ comment.replies }}"
