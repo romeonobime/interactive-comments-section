@@ -14,7 +14,9 @@
 			</figure>
 			<div class="flex gap-[7px] items-center">
 				<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
-				<span class="text-[13px] text-white px-1.5 pt-px pb-[3px] rounded-sm bg-primary">you</span>
+				{% if app.user.id == id %}
+					<span class="text-[13px] text-white px-1.5 pt-px pb-[3px] rounded-sm bg-primary">you</span>
+				{% endif %}
 			</div>
 			<span class="body-medium text-neutral-2">1 month ago</span>
 		</header>
