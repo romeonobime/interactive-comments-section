@@ -1,0 +1,35 @@
+{% props
+    id = 0,
+	username = "",
+    replyingTo = "",
+    content = "",
+	score = 0,
+%}
+
+<article class="flex flex-col gap-4 rounded-lg bg-white p-4">
+	<header class="flex gap-4 items-center">
+		<figure class="h-8 w-8">
+			<twig:BasePicture large="images/avatars/image-amyrobson.png"/>
+		</figure>
+		<div class="flex gap-[7px] items-center">
+			<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
+			<span class="text-[13px] text-white px-1.5 pt-px pb-[3px] rounded-sm bg-primary">you</span>
+		</div>
+		<span class="body-medium text-neutral-2">1 month ago</span>
+	</header>
+	<p class="body-medium text-neutral-2">
+		<em class="body-medium-bold text-primary">@{{ replyingTo }}</em>
+		{{ content }}
+	</p>
+	<div class="flex justify-between">
+		<twig:BaseCounter score="{{ score }}"/>
+		<div class="flex gap-6">
+			{% if app.user.id == id %}
+				<twig:BaseButtonDelete/>
+				<twig:BaseButtonEdit/>
+			{% else %}
+				<twig:BaseButtonReply/>
+			{% endif %}
+		</div>
+	</div>
+</article>
