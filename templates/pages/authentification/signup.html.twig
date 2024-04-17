@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Interactive-Comments-Section - Signup{% endblock %}
+
+{% block body %}
+    <twig:BaseAuthentificationLayout>
+        <div class="flex justify-center">
+            <twig:BasePicture large="images/logo.png" />
+        </div>
+        <twig:BaseAuthentificationMain>
+            <twig:TheSignup />
+        </twig:BaseAuthentificationMain>
+    </twig:BaseAuthentificationLayout>
+{% endblock %}

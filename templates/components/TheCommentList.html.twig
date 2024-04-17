@@ -1,0 +1,15 @@
+<ul class="flex flex-col gap-4">
+    {% for comment in this.comments %}
+	    <li>
+		    <twig:BaseComment
+                id="{{ comment.user.id }}"
+                username="{{ comment.user.username }}"
+                png="{{ comment.user.image.png }}"
+                webp="{{ comment.user.image.webp }}"
+                content="{{ comment.content }}"
+                score="{{ comment.score }}"
+                replies="{{ comment.replies }}"
+            />
+	    </li>
+    {% endfor %}
+</ul>

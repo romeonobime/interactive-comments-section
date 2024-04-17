@@ -1,0 +1,58 @@
+{% props
+	id = 0,
+	username = "",
+	png = "",
+	webp = "",
+    content = "",
+	score = 0,
+    replies = []
+%}
+
+<div class="flex flex-col gap-4">
+	<article class="flex flex-col gap-4 rounded-lg bg-white p-4">
+		<header class="flex gap-4 items-center">
+			<figure class="h-8 w-8">
+				<twig:BaseAvatar
+					png="{{ png }}"
+					webp="{{ webp }}"
+				/>
+			</figure>
+			<div class="flex gap-[7px] items-center">
+				<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
+				{% if app.user.id == id %}
+					<span class="text-[13px] text-white px-1.5 pt-px pb-[3px] rounded-sm bg-primary">you</span>
+				{% endif %}
+			</div>
+			<span class="body-medium text-neutral-2">1 month ago</span>
+		</header>
+		<p class="body-medium text-neutral-2">{{ content }}</p>
+		<div class="flex justify-between">
+			<twig:BaseCounter score="{{ score }}"/>
+			<div class="flex gap-6">
+				{% if app.user.id == id %}
+						<twig:BaseButtonDelete/>
+						<twig:BaseButtonEdit/>
+					{% else %}
+						<twig:BaseButtonReply/>
+				{% endif %}
+			</div>
+		</div>
+	</article>
+	{% if replies|length > 0 %}
+		<ul class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
+			{% for reply in replies %}
+				<li>
+					<twig:BaseReply
+						id="{{ reply.user.id }}"
+						username="{{ reply.user.username }}"
+						png="{{ reply.user.image.png }}"
+						webp="{{ reply.user.image.webp }}"
+						replyingTo="{{ reply.replyingTo }}"
+						content="{{ reply.content }}"
+						score="{{ reply.score }}"
+					/>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+</div>

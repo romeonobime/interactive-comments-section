@@ -1,0 +1,7 @@
+{% props score = 0 %}
+
+<div class="flex items-center gap-2 rounded-[10px] bg-neutral-1-very-light py-2.5 px-4 w-fit">
+	<twig:BaseCounterButtonPlus />
+	<span class="heading-medium text-primary">{{ score }}</span>
+	<twig:BaseCounterButtonMinus />
+</div>

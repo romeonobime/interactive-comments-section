@@ -1,0 +1,14 @@
+{% props class = "", large = "", medium = "", small = "", alt = "" %}
+
+<picture>
+	{% if large != "" %}
+		<source srcset="{{ asset(large) }}" media="(min-width: 640px)"/>
+	{% endif %}
+	{% if medium != "" %}
+		<source srcset="{{ asset(medium) }}" media="(min-width: 768px)"/>
+	{% endif %}
+	{% if small != "" %}
+		<source srcset="{{ asset(small) }}"/>
+	{% endif %}
+	<img class="{{ class }}" src="{{ asset(large) }}" alt="{{ alt }}"/>
+</picture>
