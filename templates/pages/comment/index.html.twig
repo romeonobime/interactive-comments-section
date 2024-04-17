@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Interactive-Comments-Section{% endblock %}
+{% block title %}Interactive-Comments-Section
+{% endblock %}
 
 {% block body %}
-    <twig:TheCommentList />
+	<div class="wrapper pt-8">
+		<twig:TheCommentList/>
+	</div>
 {% endblock %}

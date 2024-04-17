@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --container: 1440px;
+    }
+
     @font-face {
         font-family: "Rubik";
         src: url("./../fonts/Rubik/Rubik-VariableFont_wght.ttf");
