@@ -1,5 +1,5 @@
 <article {{ attributes }} class="flex flex-col gap-4">
-    <twig:BaseCommentList comments="{{ this.comments }}" form="{{ form }}" />
+    <twig:BaseCommentList comments="{{ this.comments }}" />
         {{ form_start(form, { attr: {
                 'data-action': 'live#action:prevent',
                 'data-live-action-param': 'addComment',
