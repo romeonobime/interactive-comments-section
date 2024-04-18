@@ -1,7 +1,5 @@
-{% props comments = [] %}
-
 <ul class="flex flex-col gap-4">
-    {% for comment in comments %}
+    {% for comment in this.comments %}
 	    <li>
 		    <twig:BaseComment
                 commentId="{{ comment.id }}"
