@@ -13,7 +13,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 
 #[AsLiveComponent]
 class TheComment extends AbstractController
@@ -24,9 +23,6 @@ class TheComment extends AbstractController
     #[LiveProp]
     public ?Comment $initialFormData = null;
     private CommentRepository $commentRepository;
-
-    /** @var Security */
-    private $security;
 
     public function __construct(CommentRepository $commentRepository)
     {
@@ -55,6 +51,7 @@ class TheComment extends AbstractController
         $entityManager->flush();
     }
 
+/*
     #[LiveAction]
     public function deleteComment(#[LiveArg] int $id, EntityManagerInterface $entityManager)
     {
@@ -62,4 +59,5 @@ class TheComment extends AbstractController
         $entityManager->remove($comment);
         $entityManager->flush();
     }
+*/
 }
