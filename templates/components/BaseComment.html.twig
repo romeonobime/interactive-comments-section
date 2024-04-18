@@ -32,7 +32,7 @@
 			<div class="flex gap-6">
 				{% if app.user.id == userId %}
 						<twig:BaseButtonDelete id="{{ commentId }}" />
-						<twig:BaseButtonEdit/>
+						<twig:BaseButtonEdit id="{{ commentId }}" />
 					{% else %}
 						<twig:BaseButtonReply/>
 				{% endif %}
