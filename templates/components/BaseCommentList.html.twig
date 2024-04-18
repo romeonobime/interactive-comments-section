@@ -4,7 +4,8 @@
     {% for comment in comments %}
 	    <li>
 		    <twig:BaseComment
-                id="{{ comment.user.id }}"
+                commentId="{{ comment.id }}"
+                userId="{{ comment.user.id }}"
                 username="{{ comment.user.username }}"
                 png="{{ comment.user.image.png }}"
                 webp="{{ comment.user.image.webp }}"

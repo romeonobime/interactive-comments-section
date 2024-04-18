@@ -1,4 +1,9 @@
-<button class="flex gap-2 items-center fill-primary text-primary hover:fill-primary-light hover:text-primary-light">
+<button
+    class="flex gap-2 items-center fill-primary text-primary hover:fill-primary-light hover:text-primary-light"
+        data-action="live#action"
+        data-live-action-param="deleteComment"
+        data-live-id-param="{{ id }}"
+    >
     <twig:BaseIconEdit />
     <span class="body-medium-bold">Edit</span>
 </button>

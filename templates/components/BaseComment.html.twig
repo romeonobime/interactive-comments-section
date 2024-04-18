@@ -1,5 +1,6 @@
 {% props
-	id = 0,
+	commentId = 0,
+	userId = 0,
 	username = "",
 	png = "",
 	webp = "",
@@ -19,7 +20,7 @@
 			</figure>
 			<div class="flex gap-[7px] items-center">
 				<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
-				{% if app.user.id == id %}
+				{% if app.user.id == userId %}
 					<span class="text-[13px] text-white px-1.5 pt-px pb-[3px] rounded-sm bg-primary">you</span>
 				{% endif %}
 			</div>
@@ -29,8 +30,8 @@
 		<div class="flex justify-between">
 			<twig:BaseCounter score="{{ score }}"/>
 			<div class="flex gap-6">
-				{% if app.user.id == id %}
-						<twig:BaseButtonDelete/>
+				{% if app.user.id == userId %}
+						<twig:BaseButtonDelete id="{{ commentId }}" />
 						<twig:BaseButtonEdit/>
 					{% else %}
 						<twig:BaseButtonReply/>
