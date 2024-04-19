@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class TheCommentList extends AbstractController
 {
     use DefaultActionTrait;
+
     private CommentRepository $commentRepository;
 
     public function __construct(CommentRepository $commentRepository)
@@ -28,6 +29,18 @@ class TheCommentList extends AbstractController
         return $this->commentRepository->findAll();
     }
 
+    #[LiveListener('commentUpdated')]
+    public function updateComment(#[LiveArg] string $content, #[LiveArg] int $id, EntityManagerInterface $entityManager)
+    {
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->setContent($content);
+
+        $entityManager->persist($comment);
+        $entityManager->flush();
+    }
+
+/*
     #[LiveAction]
     public function deleteComment(#[LiveArg] int $id, EntityManagerInterface $entityManager)
     {
@@ -35,4 +48,5 @@ class TheCommentList extends AbstractController
         $entityManager->remove($comment);
         $entityManager->flush();
     }
+*/
 }
