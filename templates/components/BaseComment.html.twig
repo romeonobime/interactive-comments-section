@@ -22,14 +22,14 @@
 					value="{{ content }}"
 					class="input-field border-neutral-1 h-24"
             		placeholder="Add a comment…">{{ content }}</textarea>
-				<button
+			</form>
+			<button
 					class="button button-primary uppercase body-medium-bold w-[104px]"
-					data-action="live#action:prevent"
+					data-action="live#action"
 					data-live-action-param="editComment"
 				>
-					Update
-				</button>
-			</form>
+				Update
+			</button>
 		{% else %}
 			<p class="body-medium text-neutral-2">{{ content }}</p>
 		{% endif %}

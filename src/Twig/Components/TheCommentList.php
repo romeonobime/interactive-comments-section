@@ -35,7 +35,6 @@ class TheCommentList extends AbstractController
         /** @var Comment $comment */
         $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
         $comment->setContent($content);
-
         $entityManager->persist($comment);
         $entityManager->flush();
     }
@@ -47,5 +46,4 @@ class TheCommentList extends AbstractController
         $entityManager->remove($comment);
         $entityManager->flush();
     }
-
 }
