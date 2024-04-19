@@ -1,12 +1,10 @@
 <div {{ attributes }} class="flex flex-col gap-4">
 	<article class="flex flex-col gap-4 rounded-lg bg-white p-4">
 		<header class="flex gap-4 items-center">
-			<figure class="h-8 w-8">
-				<twig:BaseAvatar
-					png="{{ png }}"
-					webp="{{ webp }}"
-				/>
-			</figure>
+			<twig:BaseAvatar
+				png="{{ png }}"
+				webp="{{ webp }}"
+			/>
 			<div class="flex gap-[7px] items-center">
 				<h1 class="heading-medium text-neutral-2-dark">{{ username }}</h1>
 				{% if app.user.id == userId %}

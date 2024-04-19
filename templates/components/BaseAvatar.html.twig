@@ -1,11 +1,13 @@
 {% props webp = "", png = "", alt = "" %}
 
-<picture>
-	{% if webp != "" %}
-		<source srcset="{{ asset(webp) }}" />
-	{% endif %}
-	{% if png != "" %}
-		<source srcset="{{ asset(png) }}" />
-	{% endif %}
-	<img src="{{ asset(webp) }}" alt="{{ alt }}"/>
-</picture>
+<figure class="h-8 w-8">
+	<picture>
+		{% if webp != "" %}
+			<source srcset="{{ asset(webp) }}" />
+		{% endif %}
+		{% if png != "" %}
+			<source srcset="{{ asset(png) }}" />
+		{% endif %}
+		<img src="{{ asset(webp) }}" alt="{{ alt }}"/>
+	</picture>
+</figure />

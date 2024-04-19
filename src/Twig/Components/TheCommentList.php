@@ -2,6 +2,7 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\Comment;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -23,10 +24,19 @@ class TheCommentList extends AbstractController
         $this->commentRepository = $commentRepository;
     }
 
-    #[LiveListener('commentAdded')]
     public function getComments(): array
     {
         return $this->commentRepository->findAll();
+    }
+
+    #[LiveListener('commentAdded')]
+    public function addComment(#[LiveArg] string $content, EntityManagerInterface $entityManager)
+    {
+        $comment = new Comment;
+        $comment->setContent($content);
+        $comment->setUser($this->getUser());
+        $entityManager->persist($comment);
+        $entityManager->flush();
     }
 
     #[LiveListener('commentUpdated')]

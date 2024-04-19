@@ -2,20 +2,13 @@
 
 namespace App\Twig\Components;
 
-use App\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Repository\CommentRepository;
-use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
-use App\Form\CommentType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 
 #[AsLiveComponent]
