@@ -40,13 +40,12 @@ class TheCommentList extends AbstractController
         $entityManager->flush();
     }
 
-/*
-    #[LiveAction]
+    #[LiveListener('commentDelete')]
     public function deleteComment(#[LiveArg] int $id, EntityManagerInterface $entityManager)
     {
         $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
         $entityManager->remove($comment);
         $entityManager->flush();
     }
-*/
+
 }
