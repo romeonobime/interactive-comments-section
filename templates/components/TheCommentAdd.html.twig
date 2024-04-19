@@ -1,0 +1,20 @@
+<div {{ attributes }}>
+    {{ form_start(form, { attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'addComment',
+            'class': 'flex flex-col gap-4  rounded-lg bg-white p-4',
+        }}) }}
+        <textarea
+            name="{{ field_name(form.content) }}"
+            value="{{ field_value(form.content) }}"
+            class="input-field border-neutral-1 h-24"
+            placeholder="Add a comment…" autocomplete="off"></textarea>
+        <div class="flex items-center justify-between">
+            <figure class="h-8 w-8">
+                <twig:BaseAvatar png="{{ app.user.image.png }}" webp="{{ app.user.image.webp }}"/>
+            </figure>
+            <button type="submit" class="button button-primary uppercase body-medium-bold w-[104px]">
+                Send
+            </button>
+        </div>
+    {{ form_end(form) }}

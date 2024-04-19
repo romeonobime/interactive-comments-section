@@ -3,23 +3,24 @@
 namespace App\Twig\Components;
 
 use App\Repository\CommentRepository;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
-use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\UX\LiveComponent\ComponentWithFormTrait;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 
 #[AsLiveComponent]
-class TheComment extends AbstractController
+class TheCommentAdd extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use ComponentToolsTrait;
 
     #[LiveProp]
     public ?Comment $initialFormData = null;
@@ -35,11 +36,6 @@ class TheComment extends AbstractController
         return $this->createForm(CommentType::class, $this->initialFormData);
     }
 
-    public function getComments(): array
-    {
-        return $this->commentRepository->findAll();
-    }
-
     #[LiveAction]
     public function addComment(EntityManagerInterface $entityManager)
     {
@@ -50,13 +46,7 @@ class TheComment extends AbstractController
         $comment->setUser($this->getUser());
         $entityManager->persist($comment);
         $entityManager->flush();
-    }
 
-    #[LiveAction]
-    public function deleteComment(#[LiveArg] int $id, EntityManagerInterface $entityManager)
-    {
-        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
-        $entityManager->remove($comment);
-        $entityManager->flush();
+        $this->emit('commentAdded');
     }
 }
