@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 
 
 #[AsLiveComponent]
@@ -21,4 +23,13 @@ class TheCommentReply extends AbstractController
 
     #[LiveProp]
     public string $replyingTo = "";
+
+    #[LiveProp]
+    public bool $isOpen = false;
+
+    #[LiveListener('openReplyModal')]
+    public function openModal()
+    {
+        $this->isOpen = true;
+    }
 }

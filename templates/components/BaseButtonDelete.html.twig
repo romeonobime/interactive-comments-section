@@ -2,10 +2,10 @@
 
 <button
     class="flex gap-2 items-center fill-danger text-danger hover:fill-danger-light hover:text-danger-light"
-        data-action="live#emit"
-        data-live-event-param="openModal"
-        data-live-id-param="{{ id }}"
-    >
+    data-action="live#action"
+    data-live-action-param="setIsDeleting"
+    data-live-id-param="{{ id }}"
+>
     <twig:BaseIconDelete />
     <span class="body-medium-bold">Delete</span>
 </button>

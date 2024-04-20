@@ -43,6 +43,9 @@ class BaseComment extends AbstractController
     #[LiveProp]
     public bool $isEditing = false;
 
+    #[LiveProp]
+    public bool $isDeleting = false;
+
     /** @var PersistentCollection $replies */
     public $replies;
 
@@ -61,6 +64,12 @@ class BaseComment extends AbstractController
     public function setIsEditing()
     {
         $this->isEditing = !$this->isEditing;
+    }
+
+    #[LiveAction]
+    public function setIsDeleting()
+    {
+        $this->isDeleting = !$this->isDeleting;
     }
 
     #[LiveAction]

@@ -73,4 +73,21 @@ class TheCommentList extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
     }
+
+    #[LiveListener('replyUpdated')]
+    public function updateReply(#[LiveArg] int $id, #[LiveArg] string $content, #[LiveArg] string $replyingto, EntityManagerInterface $entityManager)
+    {
+        $reply = new Reply;
+        $reply->setContent($content);
+        $reply->setUser($this->getUser());
+        $reply->setReplyingTo($replyingto);
+        $entityManager->persist($reply);
+        $entityManager->flush();
+
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->addReply($reply);
+        $entityManager->persist($comment);
+        $entityManager->flush();
+    }
 }

@@ -22,10 +22,10 @@
             		placeholder="Add a comment…">{{ content }}</textarea>
 			</form>
 			<button
-					class="button button-primary uppercase body-medium-bold w-[104px]"
-					data-action="live#action"
-					data-live-action-param="editComment"
-				>
+				class="button button-primary uppercase body-medium-bold w-[104px]"
+				data-action="live#action"
+				data-live-action-param="editComment"
+			>
 				Update
 			</button>
 		{% else %}
@@ -53,12 +53,15 @@
 						username="{{ reply.user.username }}"
 						png="{{ reply.user.image.png }}"
 						webp="{{ reply.user.image.webp }}"
-						replyingTo="{{ reply.replyingTo }}"
+						replyingTo="{{ username }}"
 						content="{{ reply.content }}"
 						score="{{ reply.score }}"
 					/>
 				</li>
 			{% endfor %}
 		</ul>
+	{% endif %}
+	{% if isDeleting %}
+        <twig:TheCommentDelete commentId="{{ commentId }}" />
 	{% endif %}
 </div>
