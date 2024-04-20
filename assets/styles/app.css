@@ -63,6 +63,14 @@
         @apply bg-primary hover:bg-primary-light;
     }
 
+    .button-danger {
+        @apply bg-danger hover:bg-danger-light;
+    }
+
+    .button-neutral {
+        @apply bg-neutral-2 hover:bg-neutral-2-dark;
+    }
+
     .input-field {
         @apply w-full rounded-lg border py-3 px-6 text-neutral-2-dark caret-primary placeholder:text-neutral-2;
     }
