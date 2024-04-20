@@ -48,7 +48,8 @@
 			{% for reply in replies %}
 				<li>
 					<twig:BaseReply
-						id="{{ reply.user.id }}"
+						userId="{{ reply.user.id }}"
+						commentId="{{ commentId }}"
 						username="{{ reply.user.username }}"
 						png="{{ reply.user.image.png }}"
 						webp="{{ reply.user.image.webp }}"

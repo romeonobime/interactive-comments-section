@@ -3,6 +3,7 @@
 namespace App\Twig\Components;
 
 use App\Entity\Comment;
+use App\Entity\Reply;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -53,6 +54,23 @@ class TheCommentList extends AbstractController
     {
         $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
         $entityManager->remove($comment);
+        $entityManager->flush();
+    }
+
+    #[LiveListener('replyAdded')]
+    public function addReply(#[LiveArg] int $id, #[LiveArg] string $content, #[LiveArg] string $replyingto, EntityManagerInterface $entityManager)
+    {
+        $reply = new Reply;
+        $reply->setContent($content);
+        $reply->setUser($this->getUser());
+        $reply->setReplyingTo($replyingto);
+        $entityManager->persist($reply);
+        $entityManager->flush();
+
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->addReply($reply);
+        $entityManager->persist($comment);
         $entityManager->flush();
     }
 }

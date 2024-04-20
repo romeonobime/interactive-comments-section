@@ -32,6 +32,12 @@ class Reply
     #[ORM\ManyToOne(inversedBy: 'replies')]
     private ?Comment $comment = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->score = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
