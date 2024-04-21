@@ -51,6 +51,9 @@ class BaseComment extends AbstractController
     #[LiveProp]
     public bool $isDeleting = false;
 
+    #[LiveProp]
+    public bool $isReplying = false;
+
     public function __construct(CommentRepository $commentRepository)
     {
         $this->commentRepository = $commentRepository;
@@ -73,6 +76,19 @@ class BaseComment extends AbstractController
     {
         $this->isDeleting = !$this->isDeleting;
     }
+
+    #[LiveAction]
+    public function setIsReplying()
+    {
+        $this->isReplying = !$this->isReplying;
+    }
+
+    #[LiveListener('replyAdded')]
+    public function close()
+    {
+        $this->isReplying = false;
+    }
+
 
     #[LiveAction]
     public function editComment()

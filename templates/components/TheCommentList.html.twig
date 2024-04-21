@@ -2,6 +2,7 @@
     {% for comment in this.comments %}
         <li>
             <twig:BaseComment
+                key="{{ comment.id }}"
                 commentId="{{ comment.id }}"
                 userId="{{ comment.user.id }}"
                 username="{{ comment.user.username }}"

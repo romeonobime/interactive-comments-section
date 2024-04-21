@@ -43,7 +43,12 @@
 			</div>
 		</div>
 	</article>
-
+	{% if isReplying %}
+		<twig:TheReplyAdd
+			replyingTo="{{ username }}"
+			commentId="{{ commentId }}"
+		/>
+	{% endif %}
 	{% if this.replies|length > 0 %}
 		<twig:TheReplyList commentId="{{ commentId }}" />
 	{% endif %}

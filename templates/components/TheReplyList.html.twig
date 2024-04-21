@@ -2,6 +2,7 @@
     {% for reply in this.replies %}
         <li>
             <twig:BaseReply
+                key="{{ reply.id }}"
                 userId="{{ reply.user.id }}"
                 commentId="{{ commentId }}"
                 replyId="{{ reply.id }}"

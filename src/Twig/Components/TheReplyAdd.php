@@ -21,9 +21,4 @@ class TheReplyAdd extends AbstractController
 
     #[LiveProp]
     public string $replyingTo = "";
-
-
-    #[LiveProp]
-    public bool $isOpen = false;
-
 }
