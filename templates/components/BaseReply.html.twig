@@ -12,10 +12,27 @@
 			</div>
 			<span class="body-medium text-neutral-2">1 month ago</span>
 		</header>
-		<p class="body-medium text-neutral-2">
-			<em class="body-medium-bold text-primary">@{{ replyingTo }}</em>
-			{{ content }}
-		</p>
+		{% if isEditing %}
+			<form data-model="*" class="flex flex-col gap-4 items-end">
+				<textarea
+					name="content"
+					value="{{ content }}"
+					class="input-field border-neutral-1 h-24"
+            		placeholder="Add a comment…">{{ content }}</textarea>
+			</form>
+			<button
+				class="button button-primary uppercase body-medium-bold w-[104px]"
+				data-action="live#action"
+				data-live-action-param="editReply"
+			>
+				Update
+			</button>
+		{% else %}
+			<p class="body-medium text-neutral-2">
+				<em class="body-medium-bold text-primary">@{{ replyingTo }}</em>
+				{{ content }}
+			</p>
+		{% endif %}
 		<div class="flex justify-between">
 			<twig:BaseCounter score="{{ score }}"/>
 			<div class="flex gap-6">

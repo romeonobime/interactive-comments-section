@@ -53,6 +53,16 @@ class TheReplyList extends AbstractController
         $entityManager->flush();
     }
 
+    #[LiveListener('replyUpdated')]
+    public function updateComment(#[LiveArg] string $content, #[LiveArg] int $id, EntityManagerInterface $entityManager)
+    {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $id ]);
+        $reply->setContent($content);
+        $entityManager->persist($reply);
+        $entityManager->flush();
+    }
+
     #[LiveListener('replyDeleted')]
     public function deleteReply(#[LiveArg] int $replyid, #[LiveArg] int $id, EntityManagerInterface $entityManager)
     {

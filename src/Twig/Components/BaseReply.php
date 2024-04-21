@@ -52,6 +52,9 @@ class BaseReply extends AbstractController
     #[LiveProp]
     public bool $isDeleting = false;
 
+    #[LiveProp]
+    public bool $isEditing = false;
+
     #[LiveAction]
     public function setIsReplying()
     {
@@ -68,5 +71,25 @@ class BaseReply extends AbstractController
     public function setIsDeleting()
     {
         $this->isDeleting = !$this->isDeleting;
+    }
+
+    #[LiveAction]
+    public function setIsEditing()
+    {
+        $this->isEditing = !$this->isEditing;
+    }
+
+    #[LiveAction]
+    public function editReply()
+    {
+        $this->setIsEditing();
+        $this->emit(
+            'replyUpdated',
+            [
+                'content' => $this->content,
+                'id' => $this->replyId
+            ],
+            'TheReplyList'
+        );
     }
 }
