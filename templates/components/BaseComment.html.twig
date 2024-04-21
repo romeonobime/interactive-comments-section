@@ -43,23 +43,9 @@
 			</div>
 		</div>
 	</article>
-	{% if replies|length > 0 %}
-		<ul class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
-			{% for reply in replies %}
-				<li>
-					<twig:BaseReply
-						userId="{{ reply.user.id }}"
-						commentId="{{ commentId }}"
-						username="{{ reply.user.username }}"
-						png="{{ reply.user.image.png }}"
-						webp="{{ reply.user.image.webp }}"
-						replyingTo="{{ username }}"
-						content="{{ reply.content }}"
-						score="{{ reply.score }}"
-					/>
-				</li>
-			{% endfor %}
-		</ul>
+
+	{% if this.replies|length > 0 %}
+		<twig:TheReplyList commentId="{{ commentId }}" />
 	{% endif %}
 	{% if isDeleting %}
         <twig:TheCommentDelete commentId="{{ commentId }}" />

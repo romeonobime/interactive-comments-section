@@ -10,6 +10,11 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
+use App\Entity\Comment;
+use App\Entity\Reply;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[AsLiveComponent]
 class BaseComment extends AbstractController
@@ -46,18 +51,15 @@ class BaseComment extends AbstractController
     #[LiveProp]
     public bool $isDeleting = false;
 
-    /** @var PersistentCollection $replies */
-    public $replies;
-
-
     public function __construct(CommentRepository $commentRepository)
     {
         $this->commentRepository = $commentRepository;
     }
 
-    public function getReplies(): PersistentCollection
+    public function getReplies()
     {
-        return $this->replies;
+        $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
+        return $comment->getReplies();
     }
 
     #[LiveAction]

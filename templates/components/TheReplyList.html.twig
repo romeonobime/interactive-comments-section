@@ -1,0 +1,16 @@
+<ul {{ attributes }} class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
+    {% for reply in this.replies %}
+        <li>
+            <twig:BaseReply
+                userId="{{ reply.user.id }}"
+                commentId="{{ commentId }}"
+                username="{{ reply.user.username }}"
+                png="{{ reply.user.image.png }}"
+                webp="{{ reply.user.image.webp }}"
+                replyingTo="{{ reply.replyingTo }}"
+                content="{{ reply.content }}"
+                score="{{ reply.score }}"
+            />
+        </li>
+    {% endfor %}
+</ul>
