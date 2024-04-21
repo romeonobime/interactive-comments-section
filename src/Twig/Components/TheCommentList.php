@@ -5,6 +5,7 @@ namespace App\Twig\Components;
 use App\Entity\Comment;
 use App\Entity\Reply;
 use App\Repository\CommentRepository;
+use App\Repository\ReplyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -18,10 +19,12 @@ class TheCommentList extends AbstractController
     use DefaultActionTrait;
 
     private CommentRepository $commentRepository;
+    private ReplyRepository $replyRepository;
 
-    public function __construct(CommentRepository $commentRepository)
+    public function __construct(CommentRepository $commentRepository, ReplyRepository $replyRepository)
     {
         $this->commentRepository = $commentRepository;
+        $this->replyRepository = $replyRepository;
     }
 
     public function getComments(): array
@@ -54,6 +57,45 @@ class TheCommentList extends AbstractController
     {
         $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
         $entityManager->remove($comment);
+        $entityManager->flush();
+    }
+
+    #[LiveListener('replyAdded')]
+    public function addReply(#[LiveArg] int $id, #[LiveArg] string $content, #[LiveArg] string $replyingto, EntityManagerInterface $entityManager)
+    {
+        $reply = new Reply;
+        $reply->setContent($content);
+        $reply->setUser($this->getUser());
+        $reply->setReplyingTo($replyingto);
+        $entityManager->persist($reply);
+
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->addReply($reply);
+        $entityManager->persist($comment);
+        $entityManager->flush();
+    }
+
+    #[LiveListener('replyUpdated')]
+    public function updateReply(#[LiveArg] string $content, #[LiveArg] int $id, EntityManagerInterface $entityManager)
+    {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $id ]);
+        $reply->setContent($content);
+        $entityManager->persist($reply);
+        $entityManager->flush();
+    }
+
+    #[LiveListener('replyDeleted')]
+    public function deleteReply(#[LiveArg] int $replyid, #[LiveArg] int $id, EntityManagerInterface $entityManager)
+    {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $replyid ]);
+
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->removeReply($reply);
+        $entityManager->remove($reply);
         $entityManager->flush();
     }
 }

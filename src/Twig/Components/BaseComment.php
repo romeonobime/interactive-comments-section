@@ -42,6 +42,9 @@ class BaseComment extends AbstractController
     #[LiveProp(writable: true)]
     public string $content;
 
+    #[LiveProp(writable: true)]
+    public string $replyContent = "";
+
     #[LiveProp]
     public int $score;
 
@@ -59,6 +62,7 @@ class BaseComment extends AbstractController
         $this->commentRepository = $commentRepository;
     }
 
+    #[LiveListener('getReplies')]
     public function getReplies()
     {
         $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
@@ -89,6 +93,22 @@ class BaseComment extends AbstractController
         $this->isReplying = false;
     }
 
+    #[LiveAction]
+    public function addReply()
+    {
+        $this->setIsReplying();
+        $this->emit(
+            'replyAdded',
+            [
+                'content' => $this->replyContent,
+                'id' => $this->commentId,
+                'replyingto' => $this->username,
+            ],
+            'TheCommentList'
+        );
+        $this->emit('getReplies');
+    }
+
 
     #[LiveAction]
     public function editComment()
@@ -99,6 +119,19 @@ class BaseComment extends AbstractController
             [
                 'content' => $this->content,
                 'id' => $this->commentId
+            ],
+            'TheCommentList'
+        );
+    }
+
+    #[LiveAction]
+    public function deleteReply()
+    {
+        $this->setIsDeleting();
+        $this->emit(
+            'commentDeleted',
+            [
+                'id' => $this->commentId,
             ],
             'TheCommentList'
         );

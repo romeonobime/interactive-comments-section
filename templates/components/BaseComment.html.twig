@@ -45,14 +45,15 @@
 	</article>
 	{% if isReplying %}
 		<twig:TheReplyAdd
-			replyingTo="{{ username }}"
-			commentId="{{ commentId }}"
+			replyContent="{{ replyContent }}"
+			png="{{ png }}"
+			webp="{{ webp }}"
 		/>
 	{% endif %}
 	{% if this.replies|length > 0 %}
 		<twig:TheReplyList commentId="{{ commentId }}" />
 	{% endif %}
 	{% if isDeleting %}
-        <twig:TheCommentDelete commentId="{{ commentId }}" />
+        <twig:TheCommentDelete />
 	{% endif %}
 </div>

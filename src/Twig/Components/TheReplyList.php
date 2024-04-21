@@ -31,48 +31,10 @@ class TheReplyList extends AbstractController
         $this->replyRepository = $replyRepository;
     }
 
+    #[LiveListener('getReplies')]
     public function getReplies()
     {
         $comment  = $this->commentRepository->find([ "id" => $this->commentId]);
         return $comment->getReplies();
-    }
-
-    #[LiveListener('replyAdded')]
-    public function addReply(#[LiveArg] int $id, #[LiveArg] string $content, #[LiveArg] string $replyingto, EntityManagerInterface $entityManager)
-    {
-        $reply = new Reply;
-        $reply->setContent($content);
-        $reply->setUser($this->getUser());
-        $reply->setReplyingTo($replyingto);
-        $entityManager->persist($reply);
-
-        /** @var Comment $comment */
-        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
-        $comment->addReply($reply);
-        $entityManager->persist($comment);
-        $entityManager->flush();
-    }
-
-    #[LiveListener('replyUpdated')]
-    public function updateComment(#[LiveArg] string $content, #[LiveArg] int $id, EntityManagerInterface $entityManager)
-    {
-        /** @var Reply $reply */
-        $reply = $this->replyRepository->findOneBy([ "id" => $id ]);
-        $reply->setContent($content);
-        $entityManager->persist($reply);
-        $entityManager->flush();
-    }
-
-    #[LiveListener('replyDeleted')]
-    public function deleteReply(#[LiveArg] int $replyid, #[LiveArg] int $id, EntityManagerInterface $entityManager)
-    {
-        /** @var Reply $reply */
-        $reply = $this->replyRepository->findOneBy([ "id" => $replyid ]);
-
-        /** @var Comment $comment */
-        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
-        $comment->removeReply($reply);
-        $entityManager->remove($reply);
-        $entityManager->flush();
     }
 }

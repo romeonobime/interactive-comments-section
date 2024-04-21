@@ -47,11 +47,10 @@
 	</article>
 	{% if isReplying %}
 		<twig:TheReplyAdd
-			replyingTo="{{ username }}"
-			commentId="{{ commentId }}"
+			replyContent="{{ replyContent }}"
 		/>
 	{% endif %}
 	{% if isDeleting %}
-        <twig:TheReplyDelete commentId="{{ commentId }}" replyId="{{ replyId }}" />
+        <twig:TheReplyDelete />
 	{% endif %}
 </div>

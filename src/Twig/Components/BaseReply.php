@@ -5,6 +5,7 @@ namespace App\Twig\Components;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Repository\CommentRepository;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
@@ -43,6 +44,9 @@ class BaseReply extends AbstractController
     #[LiveProp(writable: true)]
     public string $content;
 
+    #[LiveProp(writable: true)]
+    public string $replyContent = "";
+
     #[LiveProp]
     public int $score;
 
@@ -61,12 +65,6 @@ class BaseReply extends AbstractController
         $this->isReplying = !$this->isReplying;
     }
 
-    #[LiveListener('replyAdded')]
-    public function close()
-    {
-        $this->isReplying = false;
-    }
-
     #[LiveAction]
     public function setIsDeleting()
     {
@@ -80,6 +78,22 @@ class BaseReply extends AbstractController
     }
 
     #[LiveAction]
+    public function addReply()
+    {
+        $this->setIsReplying();
+        $this->emit(
+            'replyAdded',
+            [
+                'content' => $this->replyContent,
+                'id' => $this->commentId,
+                'replyingto' => $this->username,
+            ],
+            'TheCommentList'
+        );
+        $this->emit('getReplies');
+    }
+
+    #[LiveAction]
     public function editReply()
     {
         $this->setIsEditing();
@@ -89,7 +103,24 @@ class BaseReply extends AbstractController
                 'content' => $this->content,
                 'id' => $this->replyId
             ],
-            'TheReplyList'
+            'TheCommentList'
         );
     }
+
+    #[LiveAction]
+    public function deleteReply()
+    {
+        $this->setIsDeleting();
+        $this->emit(
+            'replyDeleted',
+            [
+                'id' => $this->commentId,
+                'replyid' => $this->replyId
+            ],
+            'TheCommentList'
+        );
+        $this->emit('getReplies');
+    }
+
+
 }

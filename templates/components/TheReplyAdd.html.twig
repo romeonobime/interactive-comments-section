@@ -1,22 +1,21 @@
-<div {{ attributes }} class="flex flex-col gap-4 rounded-lg bg-white p-4">
+{% props replyContent = "", png = "", webp = "" %}
+
+<div class="flex flex-col gap-4 rounded-lg bg-white p-4">
     <form data-model="*" class="flex flex-col gap-4 items-end">
         <textarea
-            name="content"
-            value="{{ content }}"
+            name="replyContent"
+            value="{{ replyContent }}"
             class="input-field border-neutral-1 h-24"
             placeholder="Add a comment…" autocomplete="off"></textarea>
     </form>
     <div class="flex items-center justify-between">
         <twig:BaseAvatar
-            png="{{ app.user.image.png }}"
-            webp="{{ app.user.image.webp }}"
+            png="{{ png }}"
+            webp="{{ webp }}"
         />
         <button
-            data-action="live#emit"
-            data-live-event-param="replyAdded"
-            data-live-content-param="{{ content }}"
-            data-live-id-param="{{ commentId }}"
-            data-live-replyingto-param="{{ replyingTo }}"
+            data-action="live#action"
+            data-live-action-param="addReply"
             class="button button-primary uppercase body-medium-bold w-[104px]"
         >
             Reply

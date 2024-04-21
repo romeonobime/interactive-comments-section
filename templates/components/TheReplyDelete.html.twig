@@ -1,5 +1,3 @@
-{% props commentId = 0, replyId = 0 %}
-
 <div>
     <article class="flex flex-col gap-4 rounded-lg bg-white p-4">
         <h1>Delete comment</h1>
@@ -12,10 +10,8 @@
             >Cancel</button>
             <button
                 class="button button-danger"
-                data-action="live#emit"
-                data-live-event-param="replyDeleted"
-                data-live-id-param="{{ commentId }}"
-                data-live-replyid-param="{{ replyId }}"
+                data-action="live#action"
+                data-live-action-param="deleteReply"
             >
                 Delete
             </button>
