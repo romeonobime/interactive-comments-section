@@ -20,7 +20,7 @@
 			<twig:BaseCounter score="{{ score }}"/>
 			<div class="flex gap-6">
 				{% if app.user.id == userId %}
-					<twig:BaseButtonDelete/>
+					<twig:BaseButtonDelete id="{{ replyId }}" />
 					<twig:BaseButtonEdit/>
 				{% else %}
 					<twig:BaseButtonReply/>
@@ -33,5 +33,8 @@
 			replyingTo="{{ username }}"
 			commentId="{{ commentId }}"
 		/>
+	{% endif %}
+	{% if isDeleting %}
+        <twig:TheReplyDelete commentId="{{ commentId }}" replyId="{{ replyId }}" />
 	{% endif %}
 </div>

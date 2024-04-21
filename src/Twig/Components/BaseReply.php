@@ -23,6 +23,9 @@ class BaseReply extends AbstractController
     public int $commentId;
 
     #[LiveProp]
+    public int $replyId;
+
+    #[LiveProp]
     public int $userId;
 
     #[LiveProp]
@@ -59,5 +62,11 @@ class BaseReply extends AbstractController
     public function close()
     {
         $this->isReplying = false;
+    }
+
+    #[LiveAction]
+    public function setIsDeleting()
+    {
+        $this->isDeleting = !$this->isDeleting;
     }
 }

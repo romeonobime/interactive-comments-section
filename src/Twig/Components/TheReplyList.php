@@ -20,13 +20,15 @@ class TheReplyList extends AbstractController
     use DefaultActionTrait;
 
     private CommentRepository $commentRepository;
+    private ReplyRepository $replyRepository;
 
     #[LiveProp]
     public int $commentId = 0;
 
-    public function __construct(CommentRepository $commentRepository)
+    public function __construct(CommentRepository $commentRepository, ReplyRepository $replyRepository)
     {
         $this->commentRepository = $commentRepository;
+        $this->replyRepository = $replyRepository;
     }
 
     public function getReplies()
@@ -48,6 +50,19 @@ class TheReplyList extends AbstractController
         $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
         $comment->addReply($reply);
         $entityManager->persist($comment);
+        $entityManager->flush();
+    }
+
+    #[LiveListener('replyDeleted')]
+    public function deleteReply(#[LiveArg] int $replyid, #[LiveArg] int $id, EntityManagerInterface $entityManager)
+    {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $replyid ]);
+
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
+        $comment->removeReply($reply);
+        $entityManager->remove($reply);
         $entityManager->flush();
     }
 }

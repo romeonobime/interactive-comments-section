@@ -1,0 +1,24 @@
+{% props commentId = 0, replyId = 0 %}
+
+<div>
+    <article class="flex flex-col gap-4 rounded-lg bg-white p-4">
+        <h1>Delete comment</h1>
+        <p class="body-medium text-neutral-2">Are you sure you want to delete this comment? This will remove the comment and can’t be undone.</p>
+        <div>
+            <button
+                class="button button-neutral"
+                data-action="live#action"
+                data-live-action-param="setIsDeleting"
+            >Cancel</button>
+            <button
+                class="button button-danger"
+                data-action="live#emit"
+                data-live-event-param="replyDeleted"
+                data-live-id-param="{{ commentId }}"
+                data-live-replyid-param="{{ replyId }}"
+            >
+                Delete
+            </button>
+        </div>
+    </artilce>
+</div>
