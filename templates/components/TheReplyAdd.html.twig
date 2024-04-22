@@ -1,4 +1,4 @@
-{% props replyContent = "", png = "", webp = "" %}
+{% props replyContent = "" %}
 
 <div class="flex flex-col gap-4 rounded-lg bg-white p-4">
     <form data-model="*" class="flex flex-col gap-4 items-end">
@@ -10,8 +10,8 @@
     </form>
     <div class="flex items-center justify-between">
         <twig:BaseAvatar
-            png="{{ png }}"
-            webp="{{ webp }}"
+            png="{{ app.user.image.png }}"
+            webp="{{ app.user.image.webp }}"
         />
         <button
             data-action="live#action"
