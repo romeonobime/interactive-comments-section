@@ -65,8 +65,9 @@ class BaseComment extends AbstractController
     #[LiveListener('getReplies')]
     public function getReplies()
     {
+        /** @var Comment $comment */
         $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
-        return $comment->getReplies();
+        return $comment->getReplies()->toArray();
     }
 
     #[LiveAction]
@@ -87,12 +88,6 @@ class BaseComment extends AbstractController
         $this->isReplying = !$this->isReplying;
     }
 
-    #[LiveListener('replyAdded')]
-    public function close()
-    {
-        $this->isReplying = false;
-    }
-
     #[LiveAction]
     public function addReply()
     {
@@ -108,7 +103,6 @@ class BaseComment extends AbstractController
         );
         $this->emit('getReplies');
     }
-
 
     #[LiveAction]
     public function editComment()

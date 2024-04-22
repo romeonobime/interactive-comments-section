@@ -1,5 +1,7 @@
-<ul {{ attributes }} class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
-    {% for reply in this.replies %}
+{% props replies = [] %}
+
+<ul class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
+    {% for reply in replies %}
         <li>
             <twig:BaseReply
                 key="{{ reply.id }}"
