@@ -8,13 +8,9 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Repository\CommentRepository;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use App\Entity\Comment;
-use App\Entity\Reply;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
-use Doctrine\ORM\EntityManagerInterface;
 
 #[AsLiveComponent]
 class BaseComment extends AbstractController

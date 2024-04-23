@@ -35,8 +35,8 @@
 			<twig:BaseCounter score="{{ score }}"/>
 			<div class="flex gap-6">
 				{% if app.user.id == userId %}
-						<twig:BaseButtonDelete id="{{ commentId }}" />
-						<twig:BaseButtonEdit id="{{ commentId }}" />
+						<twig:BaseButtonDelete />
+						<twig:BaseButtonEdit />
 					{% else %}
 						<twig:BaseButtonReply/>
 				{% endif %}
@@ -48,25 +48,25 @@
 	{% endif %}
 	{% if this.replies|length > 0 %}
 		<ul class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
-    {% for reply in this.replies %}
-        <li>
-            <twig:BaseReply
-                key="{{ reply.id }}"
-                userId="{{ reply.user.id }}"
-                commentId="{{ commentId }}"
-                replyId="{{ reply.id }}"
-                username="{{ reply.user.username }}"
-                png="{{ reply.user.image.png }}"
-                webp="{{ reply.user.image.webp }}"
-                replyingTo="{{ reply.replyingTo }}"
-                content="{{ reply.content }}"
-                score="{{ reply.score }}"
-            />
-        </li>
-    {% endfor %}
-</ul>
+			{% for reply in this.replies %}
+				<li>
+					<twig:BaseReply
+						key="{{ reply.id }}"
+						userId="{{ reply.user.id }}"
+						commentId="{{ commentId }}"
+						replyId="{{ reply.id }}"
+						username="{{ reply.user.username }}"
+						png="{{ reply.user.image.png }}"
+						webp="{{ reply.user.image.webp }}"
+						replyingTo="{{ reply.replyingTo }}"
+						content="{{ reply.content }}"
+						score="{{ reply.score }}"
+					/>
+				</li>
+    		{% endfor %}
+		</ul>
 	{% endif %}
 	{% if isDeleting %}
-        <twig:TheCommentDelete />
+		<twig:BaseCommentDelete />
 	{% endif %}
 </div>
