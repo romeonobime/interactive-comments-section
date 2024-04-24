@@ -48,10 +48,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Images $image = null;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\ManyToMany(targetEntity: Comment::class, mappedBy: 'users_liked')]
+    private Collection $likedComments;
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\ManyToMany(targetEntity: Comment::class, mappedBy: 'users_disliked')]
+    private Collection $dislikedComments;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likedComments = new ArrayCollection();
+        $this->dislikedComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +211,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?Images $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getLikedComments(): Collection
+    {
+        return $this->likedComments;
+    }
+
+    public function addLikedComment(Comment $likedComment): static
+    {
+        if (!$this->likedComments->contains($likedComment)) {
+            $this->likedComments->add($likedComment);
+            $likedComment->addUsersLiked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedComment(Comment $likedComment): static
+    {
+        if ($this->likedComments->removeElement($likedComment)) {
+            $likedComment->removeUsersLiked($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getDislikedComments(): Collection
+    {
+        return $this->dislikedComments;
+    }
+
+    public function addDislikedComment(Comment $dislikedComment): static
+    {
+        if (!$this->dislikedComments->contains($dislikedComment)) {
+            $this->dislikedComments->add($dislikedComment);
+            $dislikedComment->addUsersDisliked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDislikedComment(Comment $dislikedComment): static
+    {
+        if ($this->dislikedComments->removeElement($dislikedComment)) {
+            $dislikedComment->removeUsersDisliked($this);
+        }
 
         return $this;
     }

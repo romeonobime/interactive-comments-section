@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -34,11 +35,27 @@ class Comment
     #[ORM\OneToMany(targetEntity: Reply::class, mappedBy: 'comment')]
     private Collection $replies;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[JoinTable(name: 'comment_users_liked')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedComments')]
+    private Collection $users_liked;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[JoinTable(name: 'comment_users_disliked')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'dislikedComments')]
+    private Collection $users_disliked;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->score = 0;
+        $this->users_liked = new ArrayCollection();
+        $this->users_disliked = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,6 +137,54 @@ class Comment
                 $reply->setComment(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsersLiked(): Collection
+    {
+        return $this->users_liked;
+    }
+
+    public function addUsersLiked(User $usersLiked): static
+    {
+        if (!$this->users_liked->contains($usersLiked)) {
+            $this->users_liked->add($usersLiked);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersLiked(User $usersLiked): static
+    {
+        $this->users_liked->removeElement($usersLiked);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsersDisliked(): Collection
+    {
+        return $this->users_disliked;
+    }
+
+    public function addUsersDisliked(User $usersDisliked): static
+    {
+        if (!$this->users_disliked->contains($usersDisliked)) {
+            $this->users_disliked->add($usersDisliked);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersDisliked(User $usersDisliked): static
+    {
+        $this->users_disliked->removeElement($usersDisliked);
 
         return $this;
     }

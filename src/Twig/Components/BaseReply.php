@@ -116,4 +116,30 @@ class BaseReply extends AbstractController
         );
         $this->emit('getReplies');
     }
+
+    #[LiveAction]
+    public function increaseScore()
+    {
+        $this->score++;
+        $this->emit(
+            'replyScoreIncreased',
+            [
+                'id' => $this->replyId,
+            ],
+            'TheCommentList'
+        );
+    }
+
+    #[LiveAction]
+    public function decreaseScore()
+    {
+        $this->score--;
+        $this->emit(
+            'replyscoreDecreased',
+            [
+                'id' => $this->replyId,
+            ],
+            'TheCommentList'
+        );
+    }
 }

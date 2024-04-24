@@ -42,7 +42,7 @@ class BaseComment extends AbstractController
     public string $replyContent = "";
 
     #[LiveProp]
-    public int $score;
+    public int $score= 0;
 
     #[LiveProp]
     public bool $isEditing = false;
@@ -122,6 +122,60 @@ class BaseComment extends AbstractController
             'commentDeleted',
             [
                 'id' => $this->commentId,
+            ],
+            'TheCommentList'
+        );
+    }
+
+    #[LiveAction]
+    public function increaseScore()
+    {
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
+        $commentUsersLiked = $comment->getUsersLiked();
+        $commentUsersDisLiked = $comment->getUsersDisLiked();
+
+        $hasDisLiked = $commentUsersDisLiked->contains($this->getUser());
+        $hasLiked = $commentUsersLiked->contains($this->getUser());
+
+        if($hasLiked) {
+            return;
+        }
+
+        $this->score++;
+        $this->emit(
+            'commentScoreIncreased',
+            [
+                'id' => $this->commentId,
+                'score' => $this->score,
+                'hasdisliked' => $hasDisLiked,
+            ],
+            'TheCommentList'
+        );
+    }
+
+    #[LiveAction]
+    public function decreaseScore()
+    {
+        /** @var Comment $comment */
+        $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
+        $commentUsersLiked = $comment->getUsersLiked();
+        $commentUsersDisLiked = $comment->getUsersDisLiked();
+
+        $hasDisLiked = $commentUsersDisLiked->contains($this->getUser());
+        $hasLiked = $commentUsersLiked->contains($this->getUser());
+
+        if($hasDisLiked) {
+            return;
+        }
+
+        $this->score--;
+        $this->emit(
+            'commentScoreDecreased',
+            [
+                'id' => $this->commentId,
+                'score' => $this->score,
+                'hasliked' => $hasLiked,
             ],
             'TheCommentList'
         );
