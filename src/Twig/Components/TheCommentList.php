@@ -99,44 +99,6 @@ class TheCommentList extends AbstractController
         $entityManager->flush();
     }
 
-    #[LiveListener('commentScoreIncreased')]
-    public function increaseScore(#[LiveArg] int $id, #[LiveArg] int $score, #[LiveArg] bool $hasdisliked,EntityManagerInterface $entityManager)
-    {
-        /** @var Comment $comment */
-        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
-
-        if ($hasdisliked) {
-            $comment->removeUsersDisLiked($this->getUser());
-        }
-
-        if ( ! $hasdisliked) {
-            $comment->addUsersLiked($this->getUser());
-        }
-
-        $comment->setScore($score);
-        $entityManager->persist($comment);
-        $entityManager->flush();
-    }
-
-    #[LiveListener('commentScoreDecreased')]
-    public function decreasedScore(#[LiveArg] int $id,#[LiveArg] int $score, #[LiveArg] bool $hasliked, EntityManagerInterface $entityManager)
-    {
-        /** @var Comment $comment */
-        $comment = $this->commentRepository->findOneBy([ "id" => $id ]);
-
-        if ($hasliked) {
-            $comment->removeUsersLiked($this->getUser());
-        }
-
-        if ( ! $hasliked) {
-            $comment->addUsersDisLiked($this->getUser());
-        }
-
-        $comment->setScore($score);
-        $entityManager->persist($comment);
-        $entityManager->flush();
-    }
-
     #[LiveListener('replyScoreIncreased')]
     public function increaseScoreReply(#[LiveArg] int $id, EntityManagerInterface $entityManager)
     {

@@ -11,6 +11,7 @@ use App\Repository\CommentRepository;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use App\Entity\Comment;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[AsLiveComponent]
 class BaseComment extends AbstractController
@@ -128,56 +129,62 @@ class BaseComment extends AbstractController
     }
 
     #[LiveAction]
-    public function increaseScore()
+    public function increaseScore(EntityManagerInterface $entityManager)
     {
         /** @var Comment $comment */
         $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
         $commentUsersLiked = $comment->getUsersLiked();
         $commentUsersDisLiked = $comment->getUsersDisLiked();
+        $currentUser = $this->getUser();
 
-        $hasDisLiked = $commentUsersDisLiked->contains($this->getUser());
-        $hasLiked = $commentUsersLiked->contains($this->getUser());
+        $hasDisLiked = $commentUsersDisLiked->contains($currentUser);
+        $hasLiked = $commentUsersLiked->contains($currentUser);
 
         if($hasLiked) {
             return;
         }
 
+        if ($hasDisLiked) {
+            $comment->removeUsersDisLiked($currentUser);
+        }
+
+        if ( ! $hasDisLiked) {
+            $comment->addUsersLiked($currentUser);
+        }
+
         $this->score++;
-        $this->emit(
-            'commentScoreIncreased',
-            [
-                'id' => $this->commentId,
-                'score' => $this->score,
-                'hasdisliked' => $hasDisLiked,
-            ],
-            'TheCommentList'
-        );
+        $comment->setScore($this->score);
+        $entityManager->persist($comment);
+        $entityManager->flush();
     }
 
     #[LiveAction]
-    public function decreaseScore()
+    public function decreaseScore(EntityManagerInterface $entityManager)
     {
         /** @var Comment $comment */
         $comment = $this->commentRepository->findOneBy([ "id" => $this->commentId ]);
         $commentUsersLiked = $comment->getUsersLiked();
         $commentUsersDisLiked = $comment->getUsersDisLiked();
+        $currentUser = $this->getUser();
 
-        $hasDisLiked = $commentUsersDisLiked->contains($this->getUser());
-        $hasLiked = $commentUsersLiked->contains($this->getUser());
+        $hasDisLiked = $commentUsersDisLiked->contains($currentUser);
+        $hasLiked = $commentUsersLiked->contains($currentUser);
 
         if($hasDisLiked) {
             return;
         }
 
+        if ($hasLiked) {
+            $comment->removeUsersLiked($currentUser);
+        }
+
+        if ( ! $hasLiked) {
+            $comment->addUsersDisLiked($currentUser);
+        }
+
         $this->score--;
-        $this->emit(
-            'commentScoreDecreased',
-            [
-                'id' => $this->commentId,
-                'score' => $this->score,
-                'hasliked' => $hasLiked,
-            ],
-            'TheCommentList'
-        );
+        $comment->setScore($this->score);
+        $entityManager->persist($comment);
+        $entityManager->flush();
     }
 }
