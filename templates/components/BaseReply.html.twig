@@ -45,12 +45,9 @@
 			</div>
 		</div>
 	</article>
-	{% if isReplying %}
-		<twig:TheReplyAdd
-			replyContent="{{ replyContent }}"
-		/>
-	{% endif %}
-	{% if isDeleting %}
-        <twig:BaseCommentDelete />
-	{% endif %}
+	<twig:BaseReplyAdd
+		replyContent="{{ replyContent }}"
+		isReplying="{{ isReplying }}"
+	/>
+	<twig:BaseCommentDelete isDeleting="{{ isDeleting }}" />
 </div>

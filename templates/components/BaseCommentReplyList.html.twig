@@ -1,0 +1,22 @@
+{% props replies = [], commentId = 0 %}
+
+{% if replies|length > 0 %}
+    <ul class="flex flex-col gap-4 border-l-2 border-neutral-1 pl-4">
+        {% for reply in replies %}
+            <li>
+                <twig:BaseReply
+                    key="{{ reply.id }}"
+                    userId="{{ reply.user.id }}"
+                    commentId="{{ commentId }}"
+                    replyId="{{ reply.id }}"
+                    username="{{ reply.user.username }}"
+                    png="{{ reply.user.image.png }}"
+                    webp="{{ reply.user.image.webp }}"
+                    replyingTo="{{ reply.replyingTo }}"
+                    content="{{ reply.content }}"
+                    score="{{ reply.score }}"
+                />
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
