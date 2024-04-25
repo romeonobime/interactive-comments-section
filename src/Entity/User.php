@@ -60,12 +60,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Comment::class, mappedBy: 'users_disliked')]
     private Collection $dislikedComments;
 
+    /**
+     * @var Collection<int, Reply>
+     */
+    #[ORM\ManyToMany(targetEntity: Reply::class, mappedBy: 'users_liked')]
+    private Collection $liked_replies;
+
+    /**
+     * @var Collection<int, Reply>
+     */
+    #[ORM\ManyToMany(targetEntity: Reply::class, mappedBy: 'users_disliked')]
+    private Collection $disliked_replies;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->likedComments = new ArrayCollection();
         $this->dislikedComments = new ArrayCollection();
+        $this->liked_replies = new ArrayCollection();
+        $this->disliked_replies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +278,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->dislikedComments->removeElement($dislikedComment)) {
             $dislikedComment->removeUsersDisliked($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reply>
+     */
+    public function getLikedReplies(): Collection
+    {
+        return $this->liked_replies;
+    }
+
+    public function addLikedReply(Reply $likedReply): static
+    {
+        if (!$this->liked_replies->contains($likedReply)) {
+            $this->liked_replies->add($likedReply);
+            $likedReply->addUsersLiked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedReply(Reply $likedReply): static
+    {
+        if ($this->liked_replies->removeElement($likedReply)) {
+            $likedReply->removeUsersLiked($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reply>
+     */
+    public function getDislikedReplies(): Collection
+    {
+        return $this->disliked_replies;
+    }
+
+    public function addDislikedReply(Reply $dislikedReply): static
+    {
+        if (!$this->disliked_replies->contains($dislikedReply)) {
+            $this->disliked_replies->add($dislikedReply);
+            $dislikedReply->addUsersDisliked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDislikedReply(Reply $dislikedReply): static
+    {
+        if ($this->disliked_replies->removeElement($dislikedReply)) {
+            $dislikedReply->removeUsersDisliked($this);
         }
 
         return $this;

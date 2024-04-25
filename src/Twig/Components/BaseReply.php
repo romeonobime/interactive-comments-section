@@ -2,6 +2,9 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\Reply;
+use App\Repository\ReplyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -14,6 +17,8 @@ class BaseReply extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentToolsTrait;
+
+    private ReplyRepository $replyRepository;
 
     #[LiveProp]
     public int $commentId;
@@ -53,6 +58,12 @@ class BaseReply extends AbstractController
 
     #[LiveProp]
     public bool $isEditing = false;
+
+    public function __construct(ReplyRepository $replyRepository)
+    {
+        $this->replyRepository = $replyRepository;
+    }
+
 
     #[LiveAction]
     public function setIsReplying()
@@ -118,28 +129,62 @@ class BaseReply extends AbstractController
     }
 
     #[LiveAction]
-    public function increaseScore()
+    public function increaseScore(EntityManagerInterface $entityManager)
     {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $this->replyId ]);
+        $replyUsersLiked = $reply->getUsersLiked();
+        $replyUsersDisLiked = $reply->getUsersDisLiked();
+        $currentUser = $this->getUser();
+
+        $hasDisLiked = $replyUsersDisLiked->contains($currentUser);
+        $hasLiked = $replyUsersLiked->contains($currentUser);
+
+        if($hasLiked) {
+            return;
+        }
+
+        if ($hasDisLiked) {
+            $reply->removeUsersDisLiked($currentUser);
+        }
+
+        if ( ! $hasDisLiked) {
+            $reply->addUsersLiked($currentUser);
+        }
+
         $this->score++;
-        $this->emit(
-            'replyScoreIncreased',
-            [
-                'id' => $this->replyId,
-            ],
-            'TheCommentList'
-        );
+        $reply->setScore($this->score);
+        $entityManager->persist($reply);
+        $entityManager->flush();
     }
 
-    #[LiveAction]
-    public function decreaseScore()
+        #[LiveAction]
+    public function decreaseScore(EntityManagerInterface $entityManager)
     {
+        /** @var Reply $reply */
+        $reply = $this->replyRepository->findOneBy([ "id" => $this->replyId ]);
+        $replyUsersLiked = $reply->getUsersLiked();
+        $replyUsersDisLiked = $reply->getUsersDisLiked();
+        $currentUser = $this->getUser();
+
+        $hasDisLiked = $replyUsersDisLiked->contains($currentUser);
+        $hasLiked = $replyUsersLiked->contains($currentUser);
+
+        if($hasDisLiked) {
+            return;
+        }
+
+        if ($hasLiked) {
+            $reply->removeUsersLiked($currentUser);
+        }
+
+        if ( ! $hasLiked) {
+            $reply->addUsersDisLiked($currentUser);
+        }
+
         $this->score--;
-        $this->emit(
-            'replyscoreDecreased',
-            [
-                'id' => $this->replyId,
-            ],
-            'TheCommentList'
-        );
+        $reply->setScore($this->score);
+        $entityManager->persist($reply);
+        $entityManager->flush();
     }
 }
